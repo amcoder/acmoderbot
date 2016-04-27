@@ -9,7 +9,9 @@ var logRequest = function(req, res, next) {
 }
 
 var issueComment = function(req, res, next) {
-  if(req.get("x-github-event") === "issue_comment") {
+  if(req.get("x-github-event") === "issue_comment" &&
+      req.body.issue.user.login === "amcoderbot" &&
+      req.body.comment.user.login !== "amcoderbot") {
     debug("Issue comment");
   }
   next();
