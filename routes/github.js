@@ -3,12 +3,14 @@ var debug = require('debug')('amcoderbot:github');
 var router = express.Router();
 
 var masterPush = function(req, res, next) {
-  if(req.get("x-github-event") !== "push") {
-    next();
-    return;
+  if(req.get("x-github-event") === "push") {
+    debug("Master pushed");
   }
 
-  debug("Master pushed");
+  next();
+}
+
+var defaultResponse = function(req, res, next) {
   res.json({});
 }
 
@@ -18,6 +20,7 @@ router.post('/webhook', function(req, res, next) {
   debug("Body: " + JSON.stringify(req.body, null, 2));
   next();
 },
-masterPush);
+masterPush,
+defaultResponse);
 
 module.exports = router;
